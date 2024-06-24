@@ -1,21 +1,16 @@
 import os
 from langchain.prompts import ChatPromptTemplate
 from langchain_core.output_parsers.string import StrOutputParser
-from langchain_core.messages import SystemMessage, HumanMessage, AIMessage
 from langchain.memory import ConversationBufferMemory
 from langchain.chains.conversation.base import ConversationChain
-from langchain_core.prompts import MessagesPlaceholder
-import openai
 from langchain_openai import ChatOpenAI
 
 import streamlit as st
 
-st.title("Idea Generator (v1)")
+st.title("Idea Generator and Validator (v1)")
 
-# welcome_message = """Enter your idea below"""
-# st.write(st.secrets)
 if "model" not in st.session_state:
-    st.session_state.model = "gpt-3.5-turbo"
+    st.session_state.model = "gpt-4"
 
 def get_download_stream():
     download_text = ""
@@ -25,7 +20,8 @@ def get_download_stream():
 
 
 with st.sidebar:
-    option = st.selectbox("Select Model to use:", ("GPT 3.5", "GPT 4", "GPT 4o"))
+    st.write("This chatbot helps you generate, refine and validates your ideas. Say \"Hello\" to start the interaction")
+    option = st.selectbox("Select Model to use:", ("GPT 4", "GPT 4o", "GPT 3.5"))
     mapping_dict = {
         "GPT 4o": "gpt-4o",
         "GPT 4": "gpt-4",
@@ -39,13 +35,9 @@ with st.sidebar:
     st.download_button("Download chat", data=get_download_stream())
 
 
-# openai.api_key = st.secrets["openai_api_key"]
-
 DEBUG=False
 MODEL = st.session_state.model
 
-# if "chat_history" not in st.session_state:
-#     st.session_state.chat_history = [{'role':'assistant', 'content':f"Model selected is {MODEL}"}]
 
 if "memory" not in st.session_state:
     memory = ConversationBufferMemory()
