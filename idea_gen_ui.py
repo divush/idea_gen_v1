@@ -11,7 +11,6 @@ import streamlit as st
 st.title("Idea Generator and Validator (v1)")
 
 
-
 def check_password():
     """Returns `True` if the user had the correct password."""
 
